@@ -1,0 +1,27 @@
+.wallet-float-place {
+    position: fixed;
+    top: 0;
+    right: 80px;
+    width: 400px;
+    height: 100px;
+    border-radius: 0px 0px 10px 10px;
+}
+
+.alert {
+    z-index: 999;
+}
+
+.loggout-area {
+    position: fixed;
+    width: 40px;
+    top: 5px;
+    right: 0;
+    cursor: pointer;
+}
+
+.menu-bar {
+    position: fixed;
+    top: 5em;
+    right: 10px;
+    cursor: pointer;
+}

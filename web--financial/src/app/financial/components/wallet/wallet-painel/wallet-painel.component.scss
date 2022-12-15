@@ -1,0 +1,15 @@
+.wallet {
+    background-color: #79A0B6;
+    color: #fff;
+    &--resume {
+        height: 50px;
+    }
+
+    &--details {
+        height: 200px;
+    }
+
+    &--currency {
+        display: flex;
+    }
+}

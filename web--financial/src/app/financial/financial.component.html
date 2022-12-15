@@ -1,0 +1,60 @@
+<div *ngIf="alert.active" class="alert" [class]="alert.type" role="alert">
+    {{ alert.message }}
+</div>
+
+<div class="btn-group menu-bar" *ngIf="showTransactionArea">
+    <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <i class="bi bi-list text-white"></i>
+    </button>
+    <div class="dropdown-menu dropdown-menu-right">
+      <button class="dropdown-item" type="button" (click)="createProvider()">Criar novo Fornecedor</button>
+      <button class="dropdown-item" type="button" (click)="createWallet()">Criar nova carteira</button>
+      <button class="dropdown-item" type="button" (click)="loggout()" >Sair</button>
+    </div>
+  </div>
+
+  <app-reports-charts *ngIf="showTransactionArea"></app-reports-charts>
+
+<app-wallet-form
+    *ngIf="showCreateWalletForm"
+    [walletForm]="walletForm"
+    (submitWalletForm)="onSubmitWalletForm()"
+    (cancel)="onCancelWalletForm()"
+></app-wallet-form>
+
+<app-provider-form
+    *ngIf="showCreateProviderForm"
+    [providerForm]="providerForm"
+    (submitProviderForm)="onSubmitProviderForm()"
+    (cancel)="onCancelProviderForm()"
+></app-provider-form>
+
+<app-select-wallet-group
+    *ngIf="showSelectWalletGroup"
+    [wallets]="wallets"
+    (selectWallet)="onSelectWallet($event)"
+    (createWallet)="createWallet()"
+></app-select-wallet-group>
+
+<app-transaction-area
+    *ngIf="showTransactionArea"
+    [transactions]="transactions"
+    [transactionForm]="transactionForm"
+    [transactionFilterForm]="transactionFilterForm"
+    [providers]="providers"
+    (newTransaction)="onNewTransaction()"
+    (updateStatus)="onUpdateStatus($event)"
+    (filterTransaction)="onFilterTransaction()"
+    (resetFilter)="onResetFilter()"
+></app-transaction-area>
+
+<div class="wallet-float-place">
+    <app-wallet-painel
+    *ngIf="showTransactionArea"
+        [showWalletDetails]="showWalletDetails"
+    ></app-wallet-painel>
+</div>
+
+<div *ngIf="showTransactionArea" (click)="loggout()" class="loggout-area">
+    <i class="bi bi-x-circle text-danger"></i>
+</div>

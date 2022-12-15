@@ -1,0 +1,30 @@
+<div class="wallet">
+    <div class="wallet--resume">
+        <div class="row">
+            <span><strong>{{ generalData?.walletSelected?.name }}
+           <i *ngIf="!showCurrencyData" (click)="toggleShowCurrencyData()" class="bi bi-eye"></i>
+           <i *ngIf="showCurrencyData" (click)="toggleShowCurrencyData()" class="bi bi-eye-slash"></i></strong></span>
+        </div>
+       
+
+        <div class="row wallet--currency">
+            <div class="col-md-4">
+                <strong><i class="bi bi-piggy-bank text-success"></i> {{ generalData?.walletSelected?.total | currency: 'BRL' }} </strong>
+            </div>
+            <div class="col-md-4">
+                <small><i class="bi bi-arrow-up text-info"></i> {{ generalData?.walletSelected?.totalWalletEnter | currency: 'BRL' }}</small>
+            </div>
+            <div class="col-md-4">
+                <small><i class="bi bi-arrow-down text-success"></i> {{ generalData?.walletSelected?.totalWalletLeaving | currency: 'BRL' }}</small>
+            </div>
+            
+           <div>
+                
+            </div>
+        </div>
+        
+       
+    </div>
+
+    <div class="wallet--details" *ngIf="false">dd</div>
+</div>

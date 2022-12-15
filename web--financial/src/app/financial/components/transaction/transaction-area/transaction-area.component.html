@@ -1,0 +1,160 @@
+<div class="container">
+    <h3>Painel de transações
+        <button class="btn btn-light" (click)="onNewTransaction()">
+            <i class="bi bi-plus-lg"></i>
+        </button>
+    </h3>
+
+    
+      <form [formGroup]="transactionFilterForm" *ngIf="!showNewTransactionForm">
+        <div class="row" style="margin-bottom:10px;">
+          <div class="col-md-6">
+            <input type="text" class="form-control" id="name" formControlName="name" placeholder="Pesquisar por nome ou descrição ...">
+        </div>
+        </div>
+        <div class="row">
+          <div class="col-md-2">
+            <select class="form-select" id="type" formControlName="type">
+              <option value="internal">Para mim</option>
+              <option value="external">Para outros</option>
+            </select>
+            <small id="todolHelp" class="form-text text-muted">Destino</small>
+          </div>
+
+          <div class="col-md-2">
+            <select class="form-select" id="status" formControlName="status">
+              <option value="pending">Pendente</option>
+              <option value="done">Paga</option>
+              <option value="canceled">Cancelada</option>
+            </select>
+            <small id="todolHelp" class="form-text text-muted">Status</small>
+          </div>
+
+          <div class="col-md-2">
+            <select class="form-select" id="frequency" formControlName="frequency" placeholder="bolacha">
+              <option value="single">Avulsa</option>
+              <option value="monthly">Mensal</option>
+              <option value="anual">Anual</option>
+            </select>
+            <small id="todolHelp" class="form-text text-muted">Frequencia</small>
+          </div>
+          <div class="col-md-2">
+            <button class="btn btn-light" (click)="onFilter()">
+              <i class="bi bi-funnel text-info"></i> Aplicar Filtros
+          </button>
+          </div>
+
+          <div class="col-md-2">
+            <button class="btn btn-light" (click)="onResetFilter()">
+              <i class="bi bi-eraser-fill"></i> Limpar Filtros
+          </button>
+          </div>
+        </div>
+      </form>
+    
+    
+   
+
+    <table class="table" *ngIf="transactions.length && !showNewTransactionForm">
+        <thead>
+          <tr>
+            <th scope="col"></th>
+            <th scope="col">Identificação</th>
+            <th scope="col">data</th>
+            <th scope="col">status</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let transaction of transactions; index as i" [ngClass]="{ 'transaction-success' : transaction.status === 'done', 'transaction-disabled' : transaction.status === 'canceled' }">
+            <th scope="row">
+              <span *ngIf="transaction.type === 'internal'"><i class="bi bi-arrow-up text-info"></i></span>
+              <span *ngIf="transaction.type === 'external'"><i class="bi bi-arrow-down text-danger"></i></span>
+              {{ transaction.value | currency : 'BRL' }}
+            </th>
+            <td>
+              {{ transaction.name }} <small>para: <strong>{{ getProvider(transaction.providerId) }}</strong></small>
+            </td>
+            <td>
+              {{ getDateTime(transaction.createdAt) }}
+            </td>
+            <td><i [class]="getStatusClass(transaction.status)"></i></td>
+            <th>
+                <button *ngIf="transaction.status !== 'done' && transaction.status !== 'canceled'" class="btn btn-outline-light btn-sm" (click)="onUpdateStatus(i, 'done')"><i class="bi bi-cash-coin text-success"> Pagar</i></button>
+                <button *ngIf="transaction.status !== 'done' && transaction.status !== 'canceled'" class="btn btn-outline-light btn-sm" (click)="onUpdateStatus(i, 'canceled')"><i class="bi bi-x-circle text-danger"></i></button>
+                <button *ngIf="transaction.status === 'canceled'" class="btn btn-outline-light btn-sm" (click)="onUpdateStatus(i, 'pending')"><i class="bi bi-arrow-counterclockwise text-dark"></i></button>
+            </th>
+          </tr>
+        </tbody>
+      </table>
+
+      <p *ngIf="!transactions.length">Sem trasações disponiveis para a carteira selecionada.</p>
+
+      <div class="transaction-form" *ngIf="showNewTransactionForm">
+        <h3>Nova Transação <i class="bi bi-cash-coin" style="color:green"></i> </h3>
+        <form [formGroup]="transactionForm">
+            <div class="form-group col-md-6">
+                <div class="form-group">
+                <input type="text" class="form-control" id="name" formControlName="name" placeholder="Digite o nome da nova Transação...">
+                <small id="todolHelp" class="form-text text-muted">Escolha um nome curto que faça sentido às transassões efetuadas.</small>
+                </div>
+            
+                <div class="form-group">
+                    <input type="text" class="form-control" id="description" formControlName="description" placeholder="Digite uma descrição...">
+                </div>
+
+                <label for="type">Para quem será a transação?</label>
+
+                <div class="form-group">
+                    <select class="form-select" aria-label="Default select example" id="type" formControlName="type">
+                        <option selected>Escolha..</option>
+                        <option value="internal">Para mim</option>
+                        <option value="external">Para outros</option>
+                    </select>
+                </div>
+
+                <div class="form-group" *ngIf="transactionForm.value.type === 'external'">
+                    <label for="type">Fornecedor</label>
+                    <select class="form-select" aria-label="Default select example" id="providerId" formControlName="providerId">
+                        <option selected>Escolha..</option>
+                        <option *ngFor="let provider of providers" [value]="provider._id">{{ provider.name }}</option>
+                    </select>
+                </div>
+                
+
+                <label for="type">Sera uma transação recorrente?</label>
+
+                <div class="form-group">
+                    <select class="form-select" aria-label="Default select example" id="frequency" formControlName="frequency">
+                        <option selected>Escolha..</option>
+                        <option value="single">Avulsa</option>
+                        <option value="monthly">Mensal</option>
+                        <option value="anual">Anual</option>
+                    </select>
+                </div>
+
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" id="flexRadioDefault1" value="done" formControlName="status" checked>
+                    <label class="form-check-label" for="flexRadioDefault1">
+                      Ja está pago
+                    </label>
+                  </div>
+                  <div class="form-check">
+                    <input class="form-check-input" type="radio" id="flexRadioDefault2" value="pending" formControlName="status">
+                    <label class="form-check-label" for="flexRadioDefault2">
+                      Ainda será pago
+                    </label>
+                  </div>
+
+                  <h4>Valor:</h4>
+                  <div class="col-md-3">
+                    <input currencyMask type="number" class="form-control" id="value" formControlName="value">
+                  </div>
+            </div>
+        
+            <button type="submit" class="btn btn-primary" (click)="onSubmitTransactionForm()">Criar Transação</button>
+            <button type="submit" class="btn btn-light" (click)="onCancel()">Cancelar</button>
+        
+          </form>
+    </div>
+</div>

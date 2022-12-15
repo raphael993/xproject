@@ -1,0 +1,23 @@
+<div class="container">
+    <div class="provider-form">
+        <h3>Novo Fornecedor <i class="bi bi-person-add"></i> </h3>
+        <form [formGroup]="providerForm">
+            <div class="form-group col-md-6">
+                <div class="form-group">
+                <input type="text" class="form-control" id="name" formControlName="name" placeholder="Digite o nome do fornecedor de serviço...">
+                <small id="todolHelp" class="form-text text-muted">Escolha um nome curto que faça sentido nas transassões efetuadas.</small>
+                </div>
+            
+                <div class="form-group">
+                <input type="text" class="form-control" id="description" formControlName="description" placeholder="Digite uma descrição...">
+                </div>
+            
+            </div>
+        
+            <button type="submit" class="btn btn-primary" (click)="onSubmitProviderForm()">Criar Fornecedor</button>
+            <button type="submit" class="btn btn-light" (click)="onCancel()">Cancelar</button>
+        
+          </form>
+    </div>
+</div>
+

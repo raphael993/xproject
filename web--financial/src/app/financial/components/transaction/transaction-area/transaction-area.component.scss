@@ -1,0 +1,36 @@
+.container {
+    margin-top: 5em;
+}
+
+.transaction-form {
+    input, label, button[type=submit] {
+        margin-top: 1em;
+    }
+}
+
+.transaction-success {
+    background-color: #428357;
+    color: #ddd;
+}
+
+.transaction-disabled {
+    background-color: #ddd;
+}
+
+table {
+    thead {
+        tr {
+            background-color: #808588;
+            color: #fff;
+        }
+    }
+    tbody {
+        tr {
+            border: 0;
+        }
+        tr:hover {
+            background-color: black;
+            color: #fff;
+        }
+    }
+}

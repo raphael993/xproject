@@ -1,0 +1,39 @@
+<div class="container">
+    <h3>Relatórios e Gráficos</h3>
+    
+    <div class="row">
+        <div class="col-md-8">
+            <p>Ganhos e gastos ao mes</p>
+            <div style="display: block;">
+                <canvas baseChart width="800" height="400"
+                  [type]="'line'"
+                  [data]="lineChartData"
+                  [options]="lineChartOptions"
+                  [legend]="lineChartLegend">
+                </canvas>
+              </div>
+        </div>
+    
+        <div class="col-md-4">
+            <p>Valor gasto à fornecedores</p>
+            <canvas baseChart
+            [type]="'pie'"
+            [datasets]="pieChartDatasets"
+            [labels]="pieChartLabels"
+            [options]="pieChartOptions"
+            [plugins]="pieChartPlugins"
+            [legend]="pieChartLegend">
+            </canvas>
+
+        </div>
+    
+
+    </div>
+    <br><br><br>
+    <div class="row">
+        <div class="col-md-12 d-flex justify-content-end">
+            <button type="button" class="btn btn-dark">Exportar dados</button>
+        </div>
+    </div>
+    
+</div>
